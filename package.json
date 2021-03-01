@@ -3,6 +3,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "private": false,
   "files": [
     "dist",
     "src"
@@ -35,8 +36,8 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "use-localstorage",
-  "author": "wangqi",
+  "name": "@buzuosheng/use-localstorage",
+  "author": "buzuosheng",
   "module": "dist/use-localstorage.esm.js",
   "size-limit": [
     {
