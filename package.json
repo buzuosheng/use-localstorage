@@ -1,5 +1,15 @@
 {
   "version": "0.1.0",
+  "keywords": [
+    "react",
+    "hooks",
+    "localstorage"
+  ],
+  "homepage": "https://github.com/buzuosheng/use-localstorage",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/buzuosheng/use-localstorage.git"
+  },
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
