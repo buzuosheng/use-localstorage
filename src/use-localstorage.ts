@@ -5,22 +5,24 @@ export default function useLocalStorage<T>(
   initialValue: T,
   expireTime: number
 ): [T, Dispatch<T>] {
-  const [value, setValue] = useState<T>(
-    () => JSON.parse(window.localStorage.getItem(key) || '{}') || initialValue
-  );
+  const item = JSON.parse(window.localStorage.getItem(key) || '{}');
+  const [value, setValue] = useState<T>(item || initialValue);
 
   const setItem = (newValue: T) => {
     setValue(newValue);
     window.localStorage.setItem(key, JSON.stringify(newValue));
-    window.localStorage.setItem(key + '1', new Date().getTime().toString());
+    window.localStorage.setItem(
+      key + ':expireTime',
+      new Date().getTime().toString() + expireTime
+    );
   };
 
   useEffect(() => {
-    const newValue = window.localStorage.getItem(key);
-    const time = window.localStorage.getItem(key + '1');
-    let isExpire = new Date().getTime() - Number(time) < expireTime;
+    const time = window.localStorage.getItem(key + ':expireTime');
+    let isExpire = new Date().getTime() > Number(time);
     if (isExpire) window.localStorage.removeItem(key);
-    if (newValue && value !== JSON.parse(newValue) && !isExpire) {
+    const newValue = window.localStorage.getItem(key);
+    if (newValue && value !== JSON.parse(newValue)) {
       setValue(JSON.parse(newValue));
     }
   });
