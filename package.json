@@ -27,7 +27,7 @@
     "build": "tsdx build --entry src/use-localstorage.ts --format esm",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
-    "prepare": "tsdx build",
+    "prepare": "npm run build",
     "size": "size-limit",
     "analyze": "size-limit --why",
     "storybook": "start-storybook -p 6006",
@@ -50,10 +50,6 @@
   "name": "@buzuosheng/use-localstorage",
   "author": "buzuosheng",
   "size-limit": [
-    {
-      "path": "dist/use-localstorage.cjs.production.min.js",
-      "limit": "10 KB"
-    },
     {
       "path": "dist/use-localstorage.esm.js",
       "limit": "10 KB"
