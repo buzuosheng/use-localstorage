@@ -4,7 +4,7 @@ export default function useLocalStorage<T>(
   key: string,
   initialValue: T,
   expireTime: number
-): [string, Dispatch<T>] {
+): [T, Dispatch<T>] {
   const [value, setValue] = useState<T>(
     () => JSON.parse(window.localStorage.getItem(key) || '') || initialValue
   );
@@ -19,14 +19,11 @@ export default function useLocalStorage<T>(
     const newValue = window.localStorage.getItem(key);
     const time = window.localStorage.getItem(key + '1');
     let isExpire = new Date().getTime() - Number(time) < expireTime;
-    if (isExpire && newValue) {
-      window.localStorage.removeItem(key);
-      setValue(JSON.parse(newValue));
-    }
+    if (isExpire) window.localStorage.removeItem(key);
     if (newValue && value !== JSON.parse(newValue) && !isExpire) {
       setValue(JSON.parse(newValue));
     }
   });
 
-  return [JSON.stringify(value), setItem];
+  return [value, setItem];
 }
