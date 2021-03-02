@@ -6,7 +6,7 @@ export default function useLocalStorage<T>(
   expireTime: number
 ): [T, Dispatch<T>] {
   const [value, setValue] = useState<T>(
-    () => JSON.parse(window.localStorage.getItem(key) || '') || initialValue
+    () => JSON.parse(window.localStorage.getItem(key) || '{}') || initialValue
   );
 
   const setItem = (newValue: T) => {
