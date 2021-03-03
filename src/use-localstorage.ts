@@ -1,41 +1,51 @@
 import { Dispatch, useEffect, useState } from 'react';
 import ms from 'ms';
 
-interface Options {
+interface Options<T> {
+  age: string;
+  initialValue: T;
   prefix: string;
-  age: number;
 }
 
 export default function useLocalStorage<T>(
   key: string,
-  initialValue: T,
-  options: Options
+  _options?: Partial<Options<T>>
 ): [T, Dispatch<T>] {
-  const prefixkey = (options.prefix || 'prefix') + key;
+  const options = {
+    age: '7d',
+    initialValue: undefined,
+    prefix: 'Prefix:',
+    ..._options,
+  };
+  const prefixkey = options.prefix + key;
   const item = JSON.parse(window.localStorage.getItem(prefixkey) || '{}');
   const [value, setValue] = useState<T>(
-    window.localStorage.getItem(prefixkey) ? item : initialValue
+    window.localStorage.getItem(prefixkey) ? item.value : options.initialValue
   );
 
   const setItem = (newValue: T) => {
     setValue(newValue);
-    window.localStorage.setItem(prefixkey, JSON.stringify(newValue));
-    window.localStorage.setItem(
-      prefixkey + ':expireTime',
-      JSON.stringify(Date.now() + options.age)
-    );
+    const data = {
+      value: newValue,
+      expireAt: Date.now() + ms(options.age),
+    };
+
+    window.localStorage.setItem(prefixkey, JSON.stringify(data));
   };
 
   useEffect(() => {
-    const time = window.localStorage.getItem(prefixkey + ':expireTime');
-    let isExpire = Date.now() > Number(time);
+    const storage = window.localStorage.getItem(prefixkey);
+    if (!storage) {
+      return;
+    }
+    const expireAt = JSON.parse(storage).expireAt;
+    const isExpire = Date.now() > expireAt;
     if (isExpire) {
       window.localStorage.removeItem(prefixkey);
-      window.localStorage.removeItem(prefixkey + ':expireTime');
     }
-    const newValue = window.localStorage.getItem(prefixkey);
-    if (newValue && value !== JSON.parse(newValue)) {
-      setValue(JSON.parse(newValue));
+    const newValue = JSON.parse(storage).value;
+    if (value !== newValue) {
+      setValue(newValue);
     }
   });
 
