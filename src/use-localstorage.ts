@@ -1,32 +1,39 @@
 import { Dispatch, useEffect, useState } from 'react';
+import ms from 'ms';
+
+interface Options {
+  prefix: string;
+  age: number;
+}
 
 export default function useLocalStorage<T>(
   key: string,
   initialValue: T,
-  expireTime: number
+  options: Options
 ): [T, Dispatch<T>] {
-  const item = JSON.parse(window.localStorage.getItem(key) || '{}');
+  const prefixkey = (options.prefix || 'prefix') + key;
+  const item = JSON.parse(window.localStorage.getItem(prefixkey) || '{}');
   const [value, setValue] = useState<T>(
-    window.localStorage.getItem(key) ? item : initialValue
+    window.localStorage.getItem(prefixkey) ? item : initialValue
   );
 
   const setItem = (newValue: T) => {
     setValue(newValue);
-    window.localStorage.setItem(key, JSON.stringify(newValue));
+    window.localStorage.setItem(prefixkey, JSON.stringify(newValue));
     window.localStorage.setItem(
-      key + ':expireTime',
-      JSON.stringify(Date.now() + expireTime)
+      prefixkey + ':expireTime',
+      JSON.stringify(Date.now() + options.age)
     );
   };
 
   useEffect(() => {
-    const time = window.localStorage.getItem(key + ':expireTime');
+    const time = window.localStorage.getItem(prefixkey + ':expireTime');
     let isExpire = Date.now() > Number(time);
     if (isExpire) {
-      window.localStorage.removeItem(key);
-      window.localStorage.removeItem(key + ':expireTime');
+      window.localStorage.removeItem(prefixkey);
+      window.localStorage.removeItem(prefixkey + ':expireTime');
     }
-    const newValue = window.localStorage.getItem(key);
+    const newValue = window.localStorage.getItem(prefixkey);
     if (newValue && value !== JSON.parse(newValue)) {
       setValue(JSON.parse(newValue));
     }
