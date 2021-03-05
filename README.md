@@ -2,7 +2,7 @@
 
 Access Local Storage with React Hooks
 
-![](https://badgen.net/npm/v/@buzuosheng/use-localstorage)![](https://badgen.net/npm/node/@buzuosheng/use-localstorage)![](https://badgen.net/npm/dw/@buzuosheng/use-localstorage)![](https://badgen.net/bundlephobia/minzip/@buzuosheng/use-localstorage)![](https://badgen.net/bundlephobia/tree-shaking/@buzuosheng/use-localstorage)![](https://badgen.net/npm/types/@buzuosheng/use-localstorage)![](https://img.shields.io/snyk/vulnerabilities/npm/@buzuosheng/use-localstorage)
+![](https://badgen.net/npm/v/@buzuosheng/use-localstorage) ![](https://badgen.net/npm/node/@buzuosheng/use-localstorage) ![](https://badgen.net/npm/dw/@buzuosheng/use-localstorage) ![](https://badgen.net/bundlephobia/minzip/@buzuosheng/use-localstorage) ![](https://badgen.net/bundlephobia/tree-shaking/@buzuosheng/use-localstorage) ![](https://badgen.net/npm/types/@buzuosheng/use-localstorage) ![](https://img.shields.io/snyk/vulnerabilities/npm/@buzuosheng/use-localstorage)
 
 ## Demo
 
