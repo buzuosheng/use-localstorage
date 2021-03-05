@@ -7,7 +7,7 @@ interface Options<T> {
   prefix: string;
 }
 
-export default function useLocalStorage<T>(
+export function useLocalStorage<T>(
   key: string,
   _options?: Partial<Options<T>>
 ): [T, Dispatch<T>] {
