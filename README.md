@@ -27,33 +27,15 @@ const [item, setItem] = useLocalStorage(key, { initialValue, prefix, age });
 so use it like this:
 
 ```js
-{
-  age: '2 days';
-} // 172800000
-{
-  age: '1d';
-} // 86400000
-{
-  age: '10h';
-} // 36000000
-{
-  age: '2.5 hrs';
-} // 9000000
-{
-  age: '2h';
-} // 7200000
-{
-  age: '1m';
-} // 60000
-{
-  age: '5s';
-} // 5000
-{
-  age: '1y';
-} // 31557600000
-{
-  age: '100';
-} // 100
+{age: '2 days'}  // 172800000
+{age: '1d'}      // 86400000
+{age: '10h'}     // 36000000
+{age: '2.5 hrs'} // 9000000
+{age: '2h'}      // 7200000
+{age: '1m'}      // 60000
+{age: '5s'}      // 5000
+{age: '1y'}      // 31557600000
+{age: '100'}     // 100
 ```
 
 more information to see [ms](https://github.com/vercel/ms)
