@@ -2,19 +2,7 @@
 
 Access Local Storage with React Hooks
 
-![](https://badgen.net/npm/v/@buzuosheng/use-localstorage)
-
-![](https://badgen.net/npm/node/@buzuosheng/use-localstorage)
-
-![](https://badgen.net/npm/dw/@buzuosheng/use-localstorage)
-
-![](https://badgen.net/bundlephobia/minzip/@buzuosheng/use-localstorage)
-
-![](https://badgen.net/bundlephobia/tree-shaking/@buzuosheng/use-localstorage)
-
-![](https://badgen.net/npm/types/@buzuosheng/use-localstorage)
-
-![](https://img.shields.io/snyk/vulnerabilities/npm/@buzuosheng/use-localstorage)
+![](https://badgen.net/npm/v/@buzuosheng/use-localstorage)![](https://badgen.net/npm/node/@buzuosheng/use-localstorage)![](https://badgen.net/npm/dw/@buzuosheng/use-localstorage)![](https://badgen.net/bundlephobia/minzip/@buzuosheng/use-localstorage)![](https://badgen.net/bundlephobia/tree-shaking/@buzuosheng/use-localstorage)![](https://badgen.net/npm/types/@buzuosheng/use-localstorage)![](https://img.shields.io/snyk/vulnerabilities/npm/@buzuosheng/use-localstorage)
 
 ## Demo
 
@@ -24,30 +12,48 @@ open `Chrome devtool` => `Application` => `Local Storage` to see localstorage.
 
 ## Installation
 
-``` powershell
+```powershell
 npm i @buzuosheng/use-localstorage
 ```
 
 ## Usage
 
-``` js
-const [item, setItem] = useLocalStorage(key, {initialValue, prefix, age})
+```js
+const [item, setItem] = useLocalStorage(key, { initialValue, prefix, age });
 ```
 
 `age` is **effective duration** of localstorage item, it will be deal with `ms`.
 
 so use it like this:
 
-``` js
-{age: '2 days'}  // 172800000
-{age: '1d'}      // 86400000
-{age: '10h'}     // 36000000
-{age: '2.5 hrs'} // 9000000
-{age: '2h'}      // 7200000
-{age: '1m'}      // 60000
-{age: '5s'}      // 5000
-{age: '1y'}      // 31557600000
-{age: '100'}     // 100
+```js
+{
+  age: '2 days';
+} // 172800000
+{
+  age: '1d';
+} // 86400000
+{
+  age: '10h';
+} // 36000000
+{
+  age: '2.5 hrs';
+} // 9000000
+{
+  age: '2h';
+} // 7200000
+{
+  age: '1m';
+} // 60000
+{
+  age: '5s';
+} // 5000
+{
+  age: '1y';
+} // 31557600000
+{
+  age: '100';
+} // 100
 ```
 
 more information to see [ms](https://github.com/vercel/ms)
