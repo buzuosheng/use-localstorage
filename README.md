@@ -8,7 +8,7 @@ Access Local Storage with React Hooks
 
 [https://app-demo-git-main-buzuosheng.vercel.app/uselocalstorage](https://app-demo-git-main-buzuosheng.vercel.app/uselocalstorage)
 
-open `Chrome devtool` => `Application` => `Local Storage` to see localstorage.
+Open `Chrome devtool` => `Application` => `Local Storage` to see localstorage.
 
 ## Installation
 
@@ -24,7 +24,7 @@ const [item, setItem] = useLocalStorage(key, { initialValue, prefix, age });
 
 `age` is **effective duration** of localstorage item, it will be deal with `ms`.
 
-so use it like this:
+So use it like this:
 
 ```js
 {age: '2 days'}  // 172800000
@@ -38,7 +38,7 @@ so use it like this:
 {age: '100'}     // 100
 ```
 
-more information to see [ms](https://github.com/vercel/ms)
+More information to see [ms](https://github.com/vercel/ms)
 
 ## Example
 
