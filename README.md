@@ -40,9 +40,9 @@ So use it like this:
 
 More information to see [ms](https://github.com/vercel/ms)
 
-## Example
+## Exampjs
 
-```react
+``` js
 import { useLocalStorage } from '@buzuosheng/use-localstorage'
 
 const App = () => {

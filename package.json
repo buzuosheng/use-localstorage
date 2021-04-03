@@ -13,7 +13,7 @@
   "license": "MIT",
   "main": "dist/use-localstorage.esm.js",
   "module": "dist/use-localstorage.esm.js",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/use-localstorage.d.ts",
   "private": false,
   "files": [
     "dist",
