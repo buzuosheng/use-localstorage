@@ -44,7 +44,7 @@ export function useLocalStorage<T>(
       window.localStorage.removeItem(prefixkey);
     }
     const newValue = JSON.parse(storage).value;
-    if (value !== newValue) {
+    if (JSON.stringify(value) !== JSON.stringify(newValue)) {
       setValue(newValue);
     }
   });
