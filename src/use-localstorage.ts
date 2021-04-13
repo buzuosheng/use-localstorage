@@ -22,8 +22,6 @@ export function useLocalStorage<T>(
   const item = JSON.parse(storage || '{}');
   const [con, setCon] = useState({});
 
-  console.log(con);
-
   const [value, setValue] = useState<T>(
     storage ? item.value : options.initialValue
   );
@@ -56,6 +54,7 @@ export function useLocalStorage<T>(
         j: JSON.stringify(value) + JSON.stringify(newValue),
         eq: JSON.stringify(value) == JSON.stringify(newValue),
       });
+      console.log(con)
     }
   });
 
