@@ -1,4 +1,4 @@
-import { Dispatch, useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState, useCallback } from 'react';
 import ms from 'ms';
 
 interface Options<T> {
@@ -10,7 +10,7 @@ interface Options<T> {
 export function useLocalStorage<T>(
   key: string,
   _options?: Partial<Options<T>>
-): [T, Dispatch<T>] {
+): [string, Dispatch<string>] {
   const options = {
     age: '7d',
     initialValue: undefined,
@@ -20,14 +20,13 @@ export function useLocalStorage<T>(
   const prefixkey = options.prefix + key;
   const storage = window.localStorage.getItem(prefixkey);
   const item = JSON.parse(storage || '{}');
-  const [con, setCon] = useState({});
 
-  const [value, setValue] = useState<T>(
-    storage ? item.value : options.initialValue
+  const [value, setValue] = useState<string>(
+    storage ? JSON.stringify(item.value) : JSON.stringify(options.initialValue)
   );
 
-  const setItem = (newValue: T) => {
-    setValue(newValue);
+  const setItem = (newValue: string) => {
+    setValue(JSON.stringify(newValue));
     const data = {
       value: newValue,
       expireAt: Date.now() + ms(options.age),
@@ -46,17 +45,27 @@ export function useLocalStorage<T>(
       window.localStorage.removeItem(prefixkey);
     }
     const newValue = JSON.parse(storage).value;
-    if (JSON.stringify(value) !== JSON.stringify(newValue)) {
+    if (value !== newValue) {
       setValue(newValue);
-      setCon({
-        val: value,
-        newV: newValue,
-        j: JSON.stringify(value) + JSON.stringify(newValue),
-        eq: JSON.stringify(value) == JSON.stringify(newValue),
-      });
-      console.log(con)
     }
   });
+
+  const handleStorage = useCallback(
+    (event: StorageEvent) => {
+      if (event.key === key && event.newValue !== value) {
+        if (!event.newValue) {
+          return;
+        }
+        setValue(event.newValue);
+      }
+    },
+    [value]
+  );
+
+  useEffect(() => {
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, [handleStorage]);
 
   return [value, setItem];
 }
