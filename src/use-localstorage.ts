@@ -20,6 +20,9 @@ export function useLocalStorage<T>(
   const prefixkey = options.prefix + key;
   const storage = window.localStorage.getItem(prefixkey);
   const item = JSON.parse(storage || '{}');
+  const [con, setCon] = useState({});
+
+  console.log(con);
 
   const [value, setValue] = useState<T>(
     storage ? item.value : options.initialValue
@@ -47,10 +50,12 @@ export function useLocalStorage<T>(
     const newValue = JSON.parse(storage).value;
     if (JSON.stringify(value) !== JSON.stringify(newValue)) {
       setValue(newValue);
-      console.log('value:' + value);
-      console.log('newValue' + 'newValue');
-      console.log(JSON.stringify(value) + '--' + JSON.stringify(newValue));
-      console.log(JSON.stringify(value) == JSON.stringify(newValue));
+      setCon({
+        val: value,
+        newV: newValue,
+        j: JSON.stringify(value) + JSON.stringify(newValue),
+        eq: JSON.stringify(value) == JSON.stringify(newValue),
+      });
     }
   });
 
