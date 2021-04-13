@@ -12,7 +12,7 @@ Open `Chrome devtool` => `Application` => `Local Storage` to see localstorage.
 
 ## Installation
 
-```powershell
+``` powershell
 npm i @buzuosheng/use-localstorage
 ```
 
@@ -40,7 +40,7 @@ So use it like this:
 
 More information to see [ms](https://github.com/vercel/ms)
 
-## Exampjs
+## Example
 
 ``` js
 import { useLocalStorage } from '@buzuosheng/use-localstorage'
