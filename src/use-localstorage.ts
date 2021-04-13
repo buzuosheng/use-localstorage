@@ -67,5 +67,5 @@ export function useLocalStorage<T>(
     return () => window.removeEventListener('storage', handleStorage);
   }, [handleStorage]);
 
-  return [value, setItem];
+  return [JSON.parse(value), setItem];
 }
