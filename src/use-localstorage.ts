@@ -18,9 +18,11 @@ export function useLocalStorage<T>(
     ..._options,
   };
   const prefixkey = options.prefix + key;
-  const item = JSON.parse(window.localStorage.getItem(prefixkey) || '{}');
+  const storage = window.localStorage.getItem(prefixkey);
+  const item = JSON.parse(storage || '{}');
+
   const [value, setValue] = useState<T>(
-    window.localStorage.getItem(prefixkey) ? item.value : options.initialValue
+    storage ? item.value : options.initialValue
   );
 
   const setItem = (newValue: T) => {
@@ -38,14 +40,17 @@ export function useLocalStorage<T>(
     if (!storage) {
       return;
     }
-    const expireAt = JSON.parse(storage).expireAt;
-    const isExpire = Date.now() > expireAt;
+    const isExpire = Date.now() > JSON.parse(storage).expireAt;
     if (isExpire) {
       window.localStorage.removeItem(prefixkey);
     }
     const newValue = JSON.parse(storage).value;
     if (JSON.stringify(value) !== JSON.stringify(newValue)) {
       setValue(newValue);
+      console.log('value:' + value);
+      console.log('newValue' + 'newValue');
+      console.log(JSON.stringify(value) + '--' + JSON.stringify(newValue));
+      console.log(JSON.stringify(value) == JSON.stringify(newValue));
     }
   });
 
