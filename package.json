@@ -24,7 +24,7 @@
   },
   "scripts": {
     "start": "tsdx watch",
-    "build": "tsdx build --entry src/use-localstorage.ts --format esm",
+    "build": "tsdx build --entry src/use-localstorage.ts --format cjs,esm",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
     "prepare": "npm run build",
