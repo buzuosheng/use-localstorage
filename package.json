@@ -11,7 +11,7 @@
     "url": "https://github.com/buzuosheng/use-localstorage.git"
   },
   "license": "MIT",
-  "main": "dist/react-use-localstorage.cjs.production.min.js",
+  "main": "dist/use-localstorage.cjs.production.min.js",
   "module": "dist/use-localstorage.esm.js",
   "typings": "dist/use-localstorage.d.ts",
   "private": false,
