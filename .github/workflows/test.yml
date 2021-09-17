@@ -1,0 +1,20 @@
+name: test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - use: actions/checkout@v1
+      - name: use node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - name: npm run test, size and lint
+        run: |
+          npm run install
+          npm run test
+          npm run size
+          npm run lint
