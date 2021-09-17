@@ -12,9 +12,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10.x
+      - name: install packages
+        run: npm install
       - name: npm run test, size and lint
         run: |
-          npm install
           npm run test
           npm run size
           npm run lint
