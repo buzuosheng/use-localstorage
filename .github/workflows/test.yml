@@ -14,7 +14,7 @@ jobs:
           node-version: 10.x
       - name: npm run test, size and lint
         run: |
-          npm run install
+          npm install
           npm run test
           npm run size
           npm run lint
