@@ -4,5 +4,3 @@ node_modules
 .cache
 dist
 *.tgz
-yarn.lock
-package-lock.json
