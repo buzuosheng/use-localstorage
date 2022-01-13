@@ -46,8 +46,7 @@ More information to see [ms](https://github.com/vercel/ms)
 import { useLocalStorage } from '@buzuosheng/use-localstorage'
 
 const App = () => {
-  const [item, setItem] = useLocalStorage('name')
-  // const [item, setItem] = useLocalStorage('name', { age: '1d' })
+  const [item, setItem] = useLocalStorage('name', { initialValue: '123' })
   // const [item, setItem] = useLocalStorage('name', {
   //   initialValue: 'initial value',
   //   prefix: 'Prefix:',
@@ -58,11 +57,11 @@ const App = () => {
       <h1>For example: set the key of localstorage to 'name' </h1>
       <div>
         <label>
-          name:{' '}
+          name:
           <input
             type="text"
             placeholder="input localStorage.value"
-            value={item}
+            value={item || ''}
             onChange={e => setItem(e.target.value)}
           />
         </label>

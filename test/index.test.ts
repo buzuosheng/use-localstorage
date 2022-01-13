@@ -2,13 +2,13 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import { useLocalStorage } from '../src/use-localstorage';
 // import { sleep } from './testingHelpers';
 
-interface Opts {
+interface Opts<T> {
   age?: string;
-  initialValue?: string | undefined;
+  initialValue?: T;
   prefix?: string;
 }
 
-const setUp = (value: string, options: Opts) =>
+const setUp = <T>(value: string, options: Opts<T>) =>
   renderHook(() => useLocalStorage(value, options));
 
 describe('useLocalStorage', () => {
@@ -17,13 +17,14 @@ describe('useLocalStorage', () => {
   });
 
   it('set initialvalue', async () => {
-    const { result } = setUp('initValue', { initialValue: '123' });
-    expect(result.current[0]).toEqual('123');
+    const { result } = setUp('initValue', { initialValue: true });
+    expect(result.current[0]).toEqual(true);
   });
 
   it('defalut value', async () => {
     const { result } = setUp('dltValue', {});
     const setter = result.current[1];
+    console.log(result.current[0])
     await act(async () => {
       setter('defalut value');
     });
