@@ -6,12 +6,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node: ['10.x', '12.x', '14.x', '16.x', '18.x']
+
     steps:
       - uses: actions/checkout@v1
       - name: use node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 10.x
+          node-version: ${{ matrix.node }}
       - name: install packages
         run: npm install
       - name: npm run test, size and lint
