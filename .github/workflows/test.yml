@@ -16,8 +16,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-      - name: install packages
-        run: npm install
+      - uses: pnpm/action-setup@v2
+        with:
+          run_install: true
       - name: npm run test, size and lint
         run: |
           npm run test
