@@ -1,4 +1,4 @@
-import { Dispatch, useEffect, useState } from 'react'
+import { Dispatch, useEffect, useState, useCallback } from 'react'
 import ms from 'ms'
 import isBrowser from './isBrowser'
 
@@ -8,59 +8,85 @@ interface Options<T> {
   prefix: string
 }
 
+interface StorageData<T> {
+  value: T
+  expireAt: number
+}
+
 export function useLocalStorage<T>(
   key: string,
-  _options?: Partial<Options<T>>
+  options?: Partial<Options<T>>
 ): [T | undefined, Dispatch<T>] {
-  const options = {
-    age: '7d',
-    initialValue: undefined,
-    prefix: 'Prefix:',
-    ..._options
-  }
-  const prefixKey = options.prefix + key
-  let storage: Storage | undefined
+  const {
+    age = '7d',
+    initialValue = undefined,
+    prefix = 'Prefix:'
+  } = options || {}
 
-  try {
-    storage = isBrowser ? localStorage : undefined
-  } catch (err) {
-    console.error(err)
-  }
+  const prefixKey = prefix + key
+  const storage = isBrowser ? window.localStorage : undefined
 
-  const storageValue = storage?.getItem(prefixKey)
-  const item = JSON.parse(storageValue || '{}')
-  const [value, setValue] = useState<T | undefined>(
-    item.value || options.initialValue
-  )
-
-  const UpdateValue = (newValue: T) => {
-    setValue(newValue)
-    const data = {
-      value: newValue,
-      expireAt: Date.now() + ms(options.age)
-    }
+  // 初始化状态
+  const [value, setValue] = useState<T | undefined>(() => {
     try {
-      storage?.setItem(prefixKey, JSON.stringify(data))
-    } catch (err) {
-      console.error(err)
-    }
-  }
+      const storageValue = storage?.getItem(prefixKey)
+      if (!storageValue) return initialValue
 
-  useEffect(() => {
-    const storageValue = storage?.getItem(prefixKey)
-    if (!storageValue) {
-      return
-    }
-    const isExpire = Date.now() > JSON.parse(storageValue).expireAt
-    if (isExpire) {
-      storage?.removeItem(prefixKey)
-      setValue(undefined)
-    }
-    const newValue = JSON.parse(storageValue).value
-    if (JSON.stringify(value) !== JSON.stringify(newValue)) {
-      setValue(newValue)
+      const item = JSON.parse(storageValue) as StorageData<T>
+      if (Date.now() > item.expireAt) {
+        storage?.removeItem(prefixKey)
+        return initialValue
+      }
+      return item.value
+    } catch (err) {
+      console.error('Error reading from localStorage:', err)
+      return initialValue
     }
   })
 
-  return [value, UpdateValue]
+  // 更新值的函数
+  const updateValue = useCallback((newValue: T) => {
+    setValue(newValue)
+
+    if (!storage) return
+
+    try {
+      const data: StorageData<T> = {
+        value: newValue,
+        expireAt: Date.now() + ms(age)
+      }
+      storage.setItem(prefixKey, JSON.stringify(data))
+    } catch (err) {
+      console.error('Error saving to localStorage:', err)
+    }
+  }, [age, prefixKey, storage])
+
+  // 监听存储变化
+  useEffect(() => {
+    if (!storage) return
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key !== prefixKey || !e.newValue) return
+
+      try {
+        const data = JSON.parse(e.newValue) as StorageData<T>
+        if (Date.now() > data.expireAt) {
+          storage.removeItem(prefixKey)
+          setValue(undefined)
+          return
+        }
+
+        if (JSON.stringify(value) !== JSON.stringify(data.value)) {
+          setValue(data.value)
+        }
+      } catch (err) {
+        console.error('Error handling storage change:', err)
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [prefixKey, storage, value])
+
+  return [value, updateValue]
 }

@@ -1,72 +1,120 @@
-# @buzuosheng/use-localstorage
+# use-localstorage
 
-Access Local Storage with React Hooks
+A lightweight React Hook for elegant localStorage management with support for data expiration and namespace functionality.
 
-![](https://badgen.net/npm/v/@buzuosheng/use-localstorage) ![](https://badgen.net/npm/node/@buzuosheng/use-localstorage) ![](https://badgen.net/npm/dw/@buzuosheng/use-localstorage) ![](https://badgen.net/bundlephobia/minzip/@buzuosheng/use-localstorage) ![](https://badgen.net/bundlephobia/tree-shaking/@buzuosheng/use-localstorage) ![](https://badgen.net/npm/types/@buzuosheng/use-localstorage) ![](https://img.shields.io/snyk/vulnerabilities/npm/@buzuosheng/use-localstorage)
+[![NPM Version](https://img.shields.io/npm/v/@buzuosheng/use-localstorage.svg)](https://www.npmjs.com/package/@buzuosheng/use-localstorage)
+[![NPM Downloads](https://img.shields.io/npm/dm/@buzuosheng/use-localstorage.svg)](https://www.npmjs.com/package/@buzuosheng/use-localstorage)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
-## Demo
+## ✨ Features
 
-[https://app-demo-git-main-buzuosheng.vercel.app/uselocalstorage](https://app-demo-git-main-buzuosheng.vercel.app/uselocalstorage)
+- 🚀 Data expiration support
+- 🔖 Namespace (prefix) support
+- 💪 Full TypeScript support
+- 🎯 Automatic serialization and deserialization
+- 🔄 Cross-tab synchronization
+- 🛡️ Type-safe implementation
 
-Open `Chrome devtool` => `Application` => `Local Storage` to see localstorage.
+## 📦 Installation
 
-## Installation
+```bash
+# Using npm
+npm install @buzuosheng/use-localstorage
 
-``` powershell
-npm i @buzuosheng/use-localstorage
+# Using yarn
+yarn add @buzuosheng/use-localstorage
+
+# Using pnpm
+pnpm add @buzuosheng/use-localstorage
 ```
 
-## Usage
+## 🔨 Usage
 
-```js
-const [item, setItem] = useLocalStorage(key, { initialValue, prefix, age });
+```typescript
+import { useLocalStorage } from '@buzuosheng/use-localstorage';
+
+// Basic usage
+const [value, setValue] = useLocalStorage('key');
+
+// With expiration time and prefix
+const [value, setValue] = useLocalStorage('key', {
+  age: '7d',        // Supports: 's'(seconds), 'm'(minutes), 'h'(hours), 'd'(days)
+  prefix: 'app:',   // Custom prefix
+  initialValue: 'default' // Initial value
+});
 ```
 
-`age` is **effective duration** of localstorage item, it will be deal with `ms`.
+## 📝 API
 
-So use it like this:
+### useLocalStorage(key, options?)
 
-```js
-{age: '2 days'}  // 172800000
-{age: '1d'}      // 86400000
-{age: '10h'}     // 36000000
-{age: '2.5 hrs'} // 9000000
-{age: '2h'}      // 7200000
-{age: '1m'}      // 60000
-{age: '5s'}      // 5000
-{age: '1y'}      // 31557600000
-{age: '100'}     // 100
+#### Parameters
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| key | string | Yes | - | localStorage key name |
+| options | object | No | - | Configuration options |
+
+#### Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| age | string | '7d' | Data expiration time |
+| prefix | string | 'Prefix:' | Key prefix |
+| initialValue | any | undefined | Initial value |
+
+#### Return Value
+
+```typescript
+[storedValue, setValue]: [T | undefined, (value: T) => void]
 ```
 
-More information to see [ms](https://github.com/vercel/ms)
+## 🌰 Examples
 
-## Example
+### Basic Usage
 
-``` js
-import { useLocalStorage } from '@buzuosheng/use-localstorage'
+```typescript
+import { useLocalStorage } from '@buzuosheng/use-localstorage';
 
-const App = () => {
-  const [item, setItem] = useLocalStorage('name', { initialValue: '123' })
-  // const [item, setItem] = useLocalStorage('name', {
-  //   initialValue: 'initial value',
-  //   prefix: 'Prefix:',
-  //   age: '1d'
-  // })
+function App() {
+  const [name, setName] = useLocalStorage('name', {
+    age: '1d',
+    initialValue: 'John'
+  });
+
   return (
-    < div className="use-localstorage" >
-      <h1>For example: set the key of localstorage to 'name' </h1>
-      <div>
-        <label>
-          name:
-          <input
-            type="text"
-            placeholder="input localStorage.value"
-            value={item || ''}
-            onChange={e => setItem(e.target.value)}
-          />
-        </label>
-      </div>
-    </ div>
-  )
+    <input
+      value={name}
+      onChange={(e) => setName(e.target.value)}
+    />
+  );
 }
 ```
+
+### Storing Objects
+
+```typescript
+interface User {
+  name: string;
+  age: number;
+}
+
+function App() {
+  const [user, setUser] = useLocalStorage<User>('user', {
+    initialValue: { name: 'John', age: 25 }
+  });
+
+  return (
+    <div>
+      <input
+        value={user?.name}
+        onChange={(e) => setUser({ ...user, name: e.target.value })}
+      />
+    </div>
+  );
+}
+```
+
+## 📄 License
+
+MIT © [buzuosheng](https://github.com/buzuosheng)
